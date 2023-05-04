@@ -89,14 +89,15 @@ def meal_fun(num, count_menu):
 def menu_print(title, menuname, kcal, photo_url, course, test):
     # values = f'{{ "username": "Menu-Bot","text": "### {title} {course}  :___nyamnyamgood_zoom:\n{menuname} {kcal} kcal\n![음식사진]({photo_url}){photo_url}"}}'
     
-    field1 = '{"attachments": [{"fallback": "test","color": "#A1C0DE","text": "@here","author_name": "서지호","author_icon": "https://avatars.githubusercontent.com/u/96049463?v=4/","author_link": "https://github.com/NEU-chaldea/","title": "점심 메뉴","title_link": "'
+    field1 = '{"attachments": [{"fallback": "test","color": "#A1C0DE","text": "@here","author_name": "서지호","author_icon": "https://avatars.githubusercontent.com/u/96049463?v=4/","author_link": "https://github.com/NEU-chaldea/","title": "'
+    field11 = '메뉴","title_link": "'
     field2 = '","fields": [{"short":false,"title":"오늘의 '
     field3 = '메뉴","value":"'
     field4 = '"},{"short":true,"title":"칼로리","value":"'
     field5 = '칼로리"},{"short":true,"title":"사진안보이면","value":"[이거 눌러]('
     field6 = ')"}],"image_url": "'
     field7 = '"}]}'
-    values = field1 + photo_url + field2 + title + course + field3 + menuname + field4 + kcal + field5 + photo_url + field6 + photo_url + field7
+    values = field1 + title + course + field11 + photo_url + field2 + title + field3 + menuname + field4 + kcal + field5 + photo_url + field6 + photo_url + field7
     
     # 테스트 중일시
     if test:

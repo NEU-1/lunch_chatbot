@@ -5,7 +5,7 @@ import time
 import json
 
 period = 5
-test = False
+test = True
 
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
@@ -22,7 +22,7 @@ def upload_time():
                     exit()
         
         # 11시 이후에는 점심 메뉴 출력
-        elif count_menu == 0 and int(datetime.datetime.now().strftime('%H')) == 11:
+        elif count_menu == 0 and int(datetime.datetime.now().strftime('%H')) == 15:
             while True:
                 result = meal_fun([0, 1], count_menu)
                 if result:
@@ -58,7 +58,7 @@ def meal_fun(num, count_menu):
     if count_menu:
         meal = 3
     # 10분이 지나도 사진이 안올라 올시
-    if int(datetime.datetime.now().strftime('%M')) >= 10:
+    if int(datetime.datetime.now().strftime('%M')) >= 50:
         picture = False
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정

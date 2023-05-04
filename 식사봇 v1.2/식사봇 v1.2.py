@@ -61,7 +61,7 @@ def meal_fun(num, count_menu):
         meal = 3
     # 10분이 지나도 사진이 안올라 올시
     if int(datetime.datetime.now().strftime('%M')) >= 10:
-    # if int(datetime.datetime.now().strftime('%M')) >= 50:
+    # if int(datetime.datetime.now().strftime('%M')) >= 59:
         picture = False
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정

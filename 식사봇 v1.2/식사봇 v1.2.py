@@ -5,7 +5,8 @@ import time
 import json
 
 period = 5
-test = True
+# test = True
+test = False
 
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
@@ -22,7 +23,7 @@ def upload_time():
                     exit()
         
         # 11시 이후에는 점심 메뉴 출력
-        elif count_menu == 0 and int(datetime.datetime.now().strftime('%H')) == 15:
+        elif count_menu == 0 and int(datetime.datetime.now().strftime('%H')) == 11:
             while True:
                 result = meal_fun([0, 1], count_menu)
                 if result:
@@ -47,6 +48,7 @@ def access_key(num):
     response = requests.get('https://welplus.welstory.com/api/meal', params=params, cookies=cookies)
     # JSON 형식으로 응답 받기
     menulist = json.loads(response.text)
+    print(menulist)
     return menulist
 
 # 점심과 저녁 메뉴를 파싱하고 출력할지 여부를 결정하는 함수
@@ -58,7 +60,8 @@ def meal_fun(num, count_menu):
     if count_menu:
         meal = 3
     # 10분이 지나도 사진이 안올라 올시
-    if int(datetime.datetime.now().strftime('%M')) >= 50:
+    if int(datetime.datetime.now().strftime('%M')) >= 10:
+    # if int(datetime.datetime.now().strftime('%M')) >= 50:
         picture = False
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정
@@ -87,9 +90,8 @@ def meal_fun(num, count_menu):
 
 # 메뉴 정보를 출력하는 함수
 def menu_print(title, menuname, kcal, photo_url, course, test):
-    # values = f'{{ "username": "Menu-Bot","text": "### {title} {course}  :___nyamnyamgood_zoom:\n{menuname} {kcal} kcal\n![음식사진]({photo_url}){photo_url}"}}'
     
-    field1 = '{"attachments": [{"fallback": "test","color": "#A1C0DE","text": "@here","author_name": "서지호","author_icon": "https://avatars.githubusercontent.com/u/96049463?v=4/","author_link": "https://github.com/NEU-chaldea/","title": "'
+    field1 = '{"attachments": [{"fallback": "메뉴 업데이트","color": "#A1C0DE","text": "@here","title": "'
     field11 = '메뉴","title_link": "'
     field2 = '","fields": [{"short":false,"title":"오늘의 '
     field3 = '메뉴","value":"'

@@ -87,16 +87,25 @@ def meal_fun(num, count_menu):
 
 # 메뉴 정보를 출력하는 함수
 def menu_print(title, menuname, kcal, photo_url, course, test):
+    # values = f'{{ "username": "Menu-Bot","text": "### {title} {course}  :___nyamnyamgood_zoom:\n{menuname} {kcal} kcal\n![음식사진]({photo_url}){photo_url}"}}'
+    
+    field1 = '{"attachments": [{"fallback": "test","color": "#A1C0DE","text": "@here","author_name": "서지호","author_icon": "https://avatars.githubusercontent.com/u/96049463?v=4/","author_link": "https://github.com/NEU-chaldea/","title": "점심 메뉴","title_link": "'
+    field2 = '","fields": [{"short":false,"title":"오늘의 '
+    field3 = '메뉴","value":"'
+    field4 = '"},{"short":true,"title":"칼로리","value":"'
+    field5 = '칼로리"},{"short":true,"title":"사진안보이면","value":"[이거 눌러]('
+    field6 = ')"}],"image_url": "'
+    field7 = '"}]}'
+    values = field1 + photo_url + field2 + title + course + field3 + menuname + field4 + kcal + field5 + photo_url + field6 + photo_url + field7
+    
     # 테스트 중일시
     if test:
         url = 'https://meeting.ssafy.com/hooks/e6qs4hmou7nxpm5e1x66xddjnh' # 서지호 - 연구소
-        values = f'{{ "username": "Menu-Bot","text": "### {title} {course}  :___nyamnyamgood_zoom:\n{menuname} {kcal} kcal\n![음식사진]({photo_url}){photo_url}"}}'
         response = requests.post(url, data=values.encode('utf-8'))
     # 정상 서비스 중일시
     else:
         url_1 = 'https://meeting.ssafy.com/hooks/jmikd999yigfzxj53i7y7xtz3e' # 서지호 - 구미 3반
         url_2 = 'https://meeting.ssafy.com/hooks/nuu3ao3nb3dzixzmpm44m1pn7r' # 서지호 - 구미 전체 캠S
-        values = f'{{ "username": "Menu-Bot","text": "### {title} {course}  :___nyamnyamgood_zoom:\n{menuname} {kcal} kcal\n![음식사진]({photo_url}){photo_url}"}}'
         response = requests.post(url_1, data=values.encode('utf-8'))
         response = requests.post(url_2, data=values.encode('utf-8'))
 

@@ -91,7 +91,7 @@ def meal_fun(num, count_menu):
 # 메뉴 정보를 출력하는 함수
 def menu_print(title, menuname, kcal, photo_url, course, test):
     
-    field1 = '{"attachments": [{"fallback": "메뉴 업데이트","color": "#A1C0DE","text": "@here","title": "'
+    field1 = '{"attachments": [{"fallback": "메뉴 업데이트","color": "#A1C0DE","title": "'
     field11 = '메뉴","title_link": "'
     field2 = '","fields": [{"short":false,"title":"오늘의 '
     field3 = '메뉴","value":"'

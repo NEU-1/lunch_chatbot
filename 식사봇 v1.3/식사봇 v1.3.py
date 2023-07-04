@@ -39,10 +39,10 @@ def upload_time():
 
                 # 5분간 사진이 없을경우
                 if try_count >= 5: # 5분 호출
-                    result = meal_fun([0, 1, 4], True, picture=False)
+                    result = meal_fun([0, 1, 5], True, picture=False)
                                 # 사진을 포함한 저녁 메뉴 출력 시
                 else:
-                    result = meal_fun([0, 1, 4], True, picture=True)
+                    result = meal_fun([0, 1, 5], True, picture=True)
 
                 if result:
                     print('저녁이 출력되었습니다.')

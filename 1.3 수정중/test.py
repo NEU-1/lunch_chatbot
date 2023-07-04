@@ -11,27 +11,46 @@ test = True
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
     count_menu = 0
-    meal_fun([0, 1], 0)
+    # meal_fun([0, 1], 0)
     while True:
         current_time = time.perf_counter()
         
+        # 첫 프로그램 실행시 사진 없는 메뉴 출력
+        if count_menu == 0:
+            result = meal_fun([0, 1], False, picture=False)
+            if result:
+                print('점심이 출력되었습니다.')
+                count_menu += 1
+                break
+        
+        # 사진 없는 메뉴 출력 이후 (11시에 도착하면)
+        elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) == 11:
+            result = meal_fun([0, 1], False, picture=True)
+            if result:
+                print('점심이 출력되었습니다.')
+                count_menu += 1
+                break
+            # 여기에 else없는 이유 == 11시 내도록 메뉴 사진 안올라오면 이미 다 먹었겠다.
+
         # 17시 이후에는 저녁 메뉴 출력
-        if int(datetime.datetime.now().strftime('%H')) == 17:
+        elif count_menu == 2 and int(datetime.datetime.now().strftime('%H')) == 17:
+            try_count = 0
             while True:
-                result = meal_fun([0, 1, 4], count_menu)
+                result = meal_fun([0, 1, 4], True, picture=True)
+                try_count += 1
+
+                # 사진을 포함한 저녁 메뉴 출력 시
                 if result:
                     print('저녁이 출력되었습니다.')
-                    exit()
-        
-        # 11시 이후에는 점심 메뉴 출력
-        elif count_menu == 0:
-            while int(datetime.datetime.now().strftime('%H')) <= 11:
-                result = meal_fun([0, 1], count_menu)
-                if result:
-                    print('점심이 출력되었습니다.')
-                    count_menu += 1
-                    break
+                    return
 
+                # 5분간 사진이 없을경우
+                elif try_count >= 60: # 60번 호출
+                    result = meal_fun([0, 1, 4], True, picture=False)
+                    if result:
+                        print('저녁이 출력되었습니다.')
+                        return
+        
         else:
             print(f'{period}초 후에 재탐색합니다.')
             sleep_time = period - time.perf_counter() + current_time
@@ -54,13 +73,15 @@ def access_key(num):
     return menulist
 
 # 점심과 저녁 메뉴를 파싱하고 출력할지 여부를 결정하는 함수
-def meal_fun(num, count_menu):
+def meal_fun(num, select_meal, picture):
     # 기본값은 11시 정각 사진이 있을시
-    meal = 2
-    picture = True
-    # 현재 시간이 17시 이후인 경우 점심 메뉴 출력 
-    if count_menu:
+    # 현재 시간이 17시 이후인 경우 저녁 메뉴 출력 
+    
+    # select_meal == True 이면 저녁
+    if select_meal:
         meal = 3
+    else:
+        meal = 2
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정
     for i in num:

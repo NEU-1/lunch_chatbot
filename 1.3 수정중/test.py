@@ -82,6 +82,8 @@ def meal_fun(num, select_meal, picture):
         meal = 3
     else:
         meal = 2
+        if int(datetime.datetime.now().strftime('%M')) >= 10:
+            picture = False
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정
     for i in num:

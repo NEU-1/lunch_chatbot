@@ -61,6 +61,8 @@ def meal_fun(num, count_menu):
     # 현재 시간이 17시 이후인 경우 점심 메뉴 출력 
     if count_menu:
         meal = 3
+        if int(datetime.datetime.now().strftime('%M')) >= 10:
+            picture = False
 
      # 식단 정보를 순회하며 메뉴 출력 여부 결정
     for i in num:

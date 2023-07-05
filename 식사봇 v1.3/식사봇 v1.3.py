@@ -5,8 +5,8 @@ import time
 import json
 
 period = 60
-test = True
-# test = False
+# test = True
+test = False
 
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
@@ -16,14 +16,14 @@ def upload_time():
         
         # 첫 프로그램 실행시 사진 없는 메뉴 출력
         if count_menu == 0:
-            result = meal_fun([0, 1], False, picture=False)
+            result = meal_fun([0, 1], False, 1, picture=False)
             if result:
                 print('점심이 출력되었습니다.')
                 count_menu += 1
         
         # 사진 없는 메뉴 출력 이후 (11시에 도착하면)
         elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) < 11:
-            result = meal_fun([0, 1], False, picture=True)
+            result = meal_fun([0, 1], False, 2, picture=True)
             if result:
                 print('점심이 출력되었습니다.')
                 count_menu += 1
@@ -39,10 +39,10 @@ def upload_time():
 
                 # 5분간 사진이 없을경우
                 if try_count >= 5: # 5분 호출
-                    result = meal_fun([0, 1, 5], True, picture=False)
+                    result = meal_fun([0, 1, 5], True, 3, picture=False)
                                 # 사진을 포함한 저녁 메뉴 출력 시
                 else:
-                    result = meal_fun([0, 1, 5], True, picture=True)
+                    result = meal_fun([0, 1, 5], True, 3, picture=True)
 
                 if result:
                     print('저녁이 출력되었습니다.')
@@ -72,7 +72,7 @@ def access_key(num):
     return menulist
 
 # 점심과 저녁 메뉴를 파싱하고 출력할지 여부를 결정하는 함수
-def meal_fun(num, select_meal, picture):
+def meal_fun(num, select_meal, count, picture):
     # 기본값은 11시 정각 사진이 있을시
     # 현재 시간이 17시 이후인 경우 저녁 메뉴 출력 
     
@@ -94,31 +94,35 @@ def meal_fun(num, select_meal, picture):
         if picture:
             try:
                 photo_url = meal_dict.get('photoUrl') + meal_dict.get('photoCd')  # 사진 URL
-                menu_print(title, menuname, kcal, photo_url, course, test)  # 메뉴 출력 함수 호출 (사진 포함)
+                menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
             except:
                 print(f'{title} 사진이 없습니다. 5초뒤 재탐색 합니다.')
                 time.sleep(period)
                 return False
         # 사진이 없는 경우
         elif not picture:
-            if meal == 3:
+            if count != 2:
                 photo_url_default = 'https://i.ytimg.com/vi/ritv9l9lJWs/mqdefault.jpg'
-                menu_print(title, menuname, kcal, photo_url_default, course, test)  # 메뉴 출력 함수 호출 (사진 미포함)
+                menu_print(title, menuname, kcal, photo_url_default, course, test, False)  # 메뉴 출력 함수 호출 (사진 미포함)
 
     return True
 
 # 메뉴 정보를 출력하는 함수
-def menu_print(title, menuname, kcal, photo_url, course, test):
+def menu_print(title, menuname, kcal, photo_url, course, test, picture):
     
     field1 = '{"attachments": [{"fallback": "메뉴 업데이트","color": "#A1C0DE","title": "'
     field11 = '메뉴","title_link": "'
     field2 = '","fields": [{"short":false,"title":"오늘의 '
     field3 = '메뉴","value":"'
     field4 = '"},{"short":true,"title":"칼로리","value":"'
-    field5 = '칼로리"},{"short":true,"title":"사진안보이면","value":"[이거 눌러]('
-    field6 = ')"}],"image_url": "'
-    field7 = '"}]}'
-    values = field1 + title + course + field11 + photo_url + field2 + title + field3 + menuname + field4 + kcal + field5 + photo_url + field6 + photo_url + field7
+    if picture:
+        field5 = '칼로리"},{"short":true,"title":"사진안보이면","value":"[이거 눌러]('
+        field6 = ')"}],"image_url": "'
+        field7 = '"}]}'
+        values = field1 + title + course + field11 + photo_url + field2 + title + field3 + menuname + field4 + kcal + field5 + photo_url + field6 + photo_url + field7
+    else:
+        field5 = '칼로리"}]}]}'
+        values = field1 + title + course + field11 + photo_url + field2 + title + field3 + menuname + field4 + kcal + field5
     
     # 테스트 중일시
     if test:

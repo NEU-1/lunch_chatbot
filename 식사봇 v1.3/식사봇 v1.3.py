@@ -96,7 +96,7 @@ def meal_fun(num, select_meal, count, picture):
                 photo_url = meal_dict.get('photoUrl') + meal_dict.get('photoCd')  # 사진 URL
                 menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
             except:
-                print(f'{title} 사진이 없습니다. 5초뒤 재탐색 합니다.')
+                print(f'{title} 사진이 없습니다. 60초뒤 재탐색 합니다.')
                 time.sleep(period)
                 return False
         # 사진이 없는 경우

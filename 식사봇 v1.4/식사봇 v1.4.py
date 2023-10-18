@@ -16,14 +16,14 @@ def upload_time():
         
         # 첫 프로그램 실행시 사진 없는 메뉴 출력
         if count_menu == 0:
-            result = meal_fun([0, 1], False, 1, picture=False)
+            result = meal_fun(["AA", "BB"], False, 1, picture=False)
             if result:
                 print('점심이 출력되었습니다.')
                 count_menu += 1
         
         # 사진 없는 메뉴 출력 이후 (11시에 도착하면)
         elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) < 12:
-            result = meal_fun([0, 1], False, 2, picture=True)
+            result = meal_fun(["AA", "BB"], False, 2, picture=True)
             if result:
                 print('점심이 출력되었습니다.')
                 count_menu += 1
@@ -39,10 +39,10 @@ def upload_time():
 
                 # 5분간 사진이 없을경우
                 if try_count >= 5: # 5분 호출
-                    result = meal_fun([0, 1, 5], True, 3, picture=False)
+                    result = meal_fun(["AA", "BB", "CC"], True, 3, picture=False)
                                 # 사진을 포함한 저녁 메뉴 출력 시
                 else:
-                    result = meal_fun([0, 1, 5], True, 3, picture=True)
+                    result = meal_fun(["AA", "BB", "CC"], True, 3, picture=True)
 
                 if result:
                     print('저녁이 출력되었습니다.')
@@ -74,7 +74,7 @@ def access_key(num):
     return menulist
 
 # 점심과 저녁 메뉴를 파싱하고 출력할지 여부를 결정하는 함수
-def meal_fun(num, select_meal, count, picture):
+def meal_fun(mealType, select_meal, count, picture):
     # 기본값은 11시 정각 사진이 있을시
     # 현재 시간이 17시 이후인 경우 저녁 메뉴 출력 
     
@@ -84,28 +84,32 @@ def meal_fun(num, select_meal, count, picture):
     else:
         meal = 2
 
-     # 식단 정보를 순회하며 메뉴 출력 여부 결정
-    for i in num:
-        meal_dict = access_key(meal).get('data').get('mealList')[i]
-        title = meal_dict.get("menuMealTypeTxt")  # 식사 종류(점심/저녁)
-        menuname = meal_dict.get('subMenuTxt')  # 메뉴 이름
-        kcal = meal_dict.get('kcal')  # 칼로리 정보
-        course = meal_dict.get('courseTxt')  # 코스 정보
+    meal_dict = access_key(meal).get('data').get('mealList')
 
-        # 사진이 있는 경우
-        if picture:
-            try:
-                photo_url = meal_dict.get('photoUrl') + meal_dict.get('photoCd')  # 사진 URL
-                menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
-            except:
-                print(f'{title} 사진이 없습니다. 60초뒤 재탐색 합니다.')
-                time.sleep(period)
-                return False
-        # 사진이 없는 경우
-        elif not picture:
-            if count != 2:
-                photo_url_default = 'https://i.ytimg.com/vi/ritv9l9lJWs/mqdefault.jpg'
-                menu_print(title, menuname, kcal, photo_url_default, course, test, False)  # 메뉴 출력 함수 호출 (사진 미포함)
+     # 식단 정보를 순회하며 메뉴 출력 여부 결정
+    for mealDetail in meal_dict:
+        mealCourseType = mealDetail.get("menuCourseType")
+        if mealCourseType in mealType:
+            mealType.remove(mealCourseType)
+            title = mealDetail.get("menuMealTypeTxt")  # 식사 종류(점심/저녁)
+            menuname = mealDetail.get('subMenuTxt')  # 메뉴 이름
+            kcal = mealDetail.get('kcal')  # 칼로리 정보
+            course = mealDetail.get('courseTxt')  # 코스 정보
+
+            # 사진이 있는 경우
+            if picture:
+                try:
+                    photo_url = meal_dict.get('photoUrl') + meal_dict.get('photoCd')  # 사진 URL
+                    menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
+                except:
+                    print(f'{title} 사진이 없습니다. 60초뒤 재탐색 합니다.')
+                    time.sleep(period)
+                    return False
+            # 사진이 없는 경우
+            elif not picture:
+                if count != 2:
+                    photo_url_default = 'https://i.ytimg.com/vi/ritv9l9lJWs/mqdefault.jpg'
+                    menu_print(title, menuname, kcal, photo_url_default, course, test, False)  # 메뉴 출력 함수 호출 (사진 미포함)
 
     return True
 

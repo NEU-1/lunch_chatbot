@@ -5,12 +5,12 @@ import time
 import json
 
 period = 300
-# test = True
-test = False
+test = True
+# test = False
 
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
-    count_menu = 0
+    count_menu = 1
     while True:
         current_time = time.perf_counter()
         
@@ -99,7 +99,7 @@ def meal_fun(mealType, select_meal, count, picture):
             # 사진이 있는 경우
             if picture:
                 try:
-                    photo_url = meal_dict.get('photoUrl') + meal_dict.get('photoCd')  # 사진 URL
+                    photo_url = mealDetail.get('photoUrl') + mealDetail.get('photoCd')  # 사진 URL
                     menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
                 except:
                     print(f'{title} 사진이 없습니다. 60초뒤 재탐색 합니다.')

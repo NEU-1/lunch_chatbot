@@ -7,7 +7,7 @@ import json
 period = 300
 # test = True
 test = False
-
+# ds
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
     count_menu = 0

@@ -5,12 +5,12 @@ import time
 import json
 
 period = 300
-test = True
-# test = False
+# test = True
+test = False
 
 # 점심과 저녁 메뉴 업로드 시간을 확인하는 함수
 def upload_time():
-    count_menu = 1
+    count_menu = 0
     while True:
         current_time = time.perf_counter()
         
@@ -22,14 +22,15 @@ def upload_time():
                 count_menu += 1
         
         # 사진 없는 메뉴 출력 이후 (11시에 도착하면)
-        elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) < 12:
+        elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) >= 11 and int(datetime.datetime.now().strftime('%H')) < 12:
             result = meal_fun(["AA", "BB"], False, 2, picture=True)
             if result:
                 print('점심이 출력되었습니다.')
                 count_menu += 1
             # 여기에 else없는 이유 == 11시 내도록 메뉴 사진 안올라오면 이미 다 먹었겠다.
 
-        elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) == 11 and int(datetime.datetime.now().strftime('%M')) < 20:
+        # elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) == 11 and int(datetime.datetime.now().strftime('%M')) < 20:
+        elif count_menu == 1 and int(datetime.datetime.now().strftime('%H')) > 12:
             count_menu += 1
 
         # 17시 이후에는 저녁 메뉴 출력
@@ -95,14 +96,14 @@ def meal_fun(mealType, select_meal, count, picture):
             menuname = mealDetail.get('subMenuTxt')  # 메뉴 이름
             kcal = mealDetail.get('kcal')  # 칼로리 정보
             course = mealDetail.get('courseTxt')  # 코스 정보
-
+            
             # 사진이 있는 경우
             if picture:
                 try:
                     photo_url = mealDetail.get('photoUrl') + mealDetail.get('photoCd')  # 사진 URL
                     menu_print(title, menuname, kcal, photo_url, course, test, True)  # 메뉴 출력 함수 호출 (사진 포함)
                 except:
-                    print(f'{title} 사진이 없습니다. 60초뒤 재탐색 합니다.')
+                    print(f'{title} 사진이 없습니다. 300초뒤 재탐색 합니다.')
                     time.sleep(period)
                     return False
             # 사진이 없는 경우
